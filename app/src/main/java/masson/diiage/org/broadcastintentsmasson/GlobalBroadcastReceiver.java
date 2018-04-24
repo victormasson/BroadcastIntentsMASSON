@@ -18,19 +18,19 @@ public class GlobalBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Toast.makeText(context, "Action: " + intent.getAction(), Toast.LENGTH_SHORT).show();
-
+        // Permet de faire une action de l'event de la batterie
         if(intent.getAction() == BATTERY_CHANGED){
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
             int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
             float batteryPct = (level / (float)scale) * 100;
 
-            if(20 - batteryPct == 0){
+            if(batteryPct == 20){
                 Toast toast = Toast.makeText(context, "Battery: " + Math.round(batteryPct) + "%", Toast.LENGTH_SHORT);
                 toast.show();
             }
         }
 
+        // Permet de faire une action de l'event du SMS
         if(intent.getAction() == SMS_RECEIVED){
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
@@ -43,18 +43,8 @@ public class GlobalBroadcastReceiver extends BroadcastReceiver {
                     String senderNum = phoneNumber;
                     String message = currentMessage.getDisplayMessageBody();
 
-                    Toast.makeText(context,"senderNum: "+ senderNum + ", message: " + message, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,"senderNum: "+ senderNum + ",\nmessage: " + message, Toast.LENGTH_LONG).show();
                 }
-
-//                Object[] pdus = (Object[])bundle.get("pdus");
-//                final SmsMessage[] messages = new SmsMessage[pdus.length];
-//                for (int i = 0; i < pdus.length; i++) {
-//                    messages[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
-//                }
-//                if (messages.length > -1) {
-//                    String log = messages[0].getMessageBody();
-//                    Toast.makeText(context, log, Toast.LENGTH_LONG).show();
-//                }
             }
         }
     }
